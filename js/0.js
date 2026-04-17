@@ -54,11 +54,17 @@ function getSurveyById(id) {
  */
 function redirect(survey) {
   setTimeout(() => {
-    // condition 透過 URL 參數傳入，讓 Fillout 可以在提交後 redirect 時帶回
-    window.location.href = survey.url + "?condition=" + encodeURIComponent(survey.id);
+    // 檢查原始 URL 是否已經包含問號
+    const separator = survey.url.includes('?') ? '&' : '?';
+    // 只有在 URL 還沒包含該 condition 時才補上
+    const finalUrl = survey.url.includes('condition=') 
+      ? survey.url 
+      : survey.url + separator + "condition=" + encodeURIComponent(survey.id);
+    
+    window.location.href = finalUrl;
   }, 600);
 }
- 
+
 // ─── UI 函式 ───────────────────────────────────────────────
 function showResumeUI(survey) {
   // 注意：移除「重新開始」按鈕，避免同一人填多份不同組別問卷造成數據污染
