@@ -16,22 +16,15 @@ const surveys = [
 const RESUME_MS = 24 * 60 * 60 * 1000; // 24 小時內可恢復填答
  
 // ─── Cookie 工具（修正 path 問題）─────────────────────────
-/**
- * 自動取得正確的 cookie path
- * 例如：在 /official-survey/ 目錄下，path 應為 /official-survey/
- * 而非 /，否則 GitHub Pages 子目錄讀不到
- */
 function getCookiePath() {
-  // 取得當前路徑的「目錄」部分
   const parts = window.location.pathname.split("/");
-  parts.pop(); // 移除檔名
+  parts.pop();
   return parts.join("/") + "/";
 }
  
 function setCookie(name, value, days) {
   const expires = new Date(Date.now() + days * 864e5).toUTCString();
   const path = getCookiePath();
-  // 同時設定精確路徑與根路徑，確保跨頁面讀取
   document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=${path}`;
   document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/`;
 }
@@ -46,37 +39,28 @@ function getSurveyById(id) {
   return surveys.find(s => s.id === id) || null;
 }
  
-/**
- * 跳轉至問卷
- * condition 參數讓 Fillout 的「提交後跳轉」能帶回正確的組別資訊
- * 注意：Fillout 端請將「提交後跳轉 URL」設為：
- *   https://你的網址/thank.html?done=1&condition={condition的填答值}
- */
+// URL 已在 surveys 陣列內含 condition 參數，直接使用不再額外附加
 function redirect(survey) {
   setTimeout(() => {
-    // 檢查原始 URL 是否已經包含問號
-    const separator = survey.url.includes('?') ? '&' : '?';
-    // 只有在 URL 還沒包含該 condition 時才補上
-    const finalUrl = survey.url.includes('condition=') 
-      ? survey.url 
-      : survey.url + separator + "condition=" + encodeURIComponent(survey.id);
-    
-    window.location.href = finalUrl;
+    window.location.href = survey.url;
   }, 600);
 }
-
+ 
 // ─── UI 函式 ───────────────────────────────────────────────
 function showResumeUI(survey) {
-  // 注意：移除「重新開始」按鈕，避免同一人填多份不同組別問卷造成數據污染
   document.querySelector(".card").innerHTML = `
     <h1>繼續填答問卷</h1>
     <p>偵測到您之前已開始填答，尚未完成。<br>點擊下方按鈕繼續填答。</p>
     <p class="note">如填答過程遇到問題，請聯絡研究人員。</p>
     <div class="btn-group" style="margin-top:1.5rem;">
-      <button class="btn-primary" onclick="continueResume('${survey.id}', '${survey.url}')">
+      <button class="btn-primary" onclick="continueResume('${survey.url}')">
         繼續填答
       </button>
+      <button class="btn-secondary" onclick="continueResume('${survey.url}')">
+        從頭重填
+      </button>
     </div>
+    <p class="note" style="margin-top:0.75rem;">兩個按鈕都會開啟同一份問卷，組別不會改變。</p>
   `;
 }
  
@@ -88,8 +72,9 @@ function showLoadingUI(message) {
 }
  
 // ─── 流程函式 ─────────────────────────────────────────────
-function continueResume(id, url) {
-  window.location.href = url + "?condition=" + encodeURIComponent(id);
+// URL 已含 condition，直接跳轉
+function continueResume(url) {
+  window.location.href = url;
 }
  
 function clearProgress() {
@@ -107,22 +92,17 @@ function assignNew() {
 }
  
 // ─── 開發者模式 ───────────────────────────────────────────
-/**
- * 在 URL 加上 ?dev=1 可重置所有狀態，方便測試
- * 例如：https://你的網址/index.html?dev=1
- * 上線後不需要移除，一般受試者不會知道這個參數
- */
+// 在 URL 加上 ?dev=1 可重置所有狀態，方便測試
+// 例如：https://你的網址/index.html?dev=1
 function checkDevMode() {
   const params = new URLSearchParams(window.location.search);
   if (params.get("dev") === "1") {
     clearProgress();
-    // 清除所有 survey 相關 cookie
     const cookiePath = getCookiePath();
     document.cookie = `survey_completed=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=${cookiePath}`;
     document.cookie = `survey_completed=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
     localStorage.removeItem("completed_condition");
     console.log("[Dev] 已重置所有填答狀態");
-    // 移除 dev 參數後重新載入
     window.location.href = window.location.pathname;
     return true;
   }
@@ -131,7 +111,6 @@ function checkDevMode() {
  
 // ─── 主程式 ───────────────────────────────────────────────
 $(document).ready(function () {
-  // 開發者模式優先處理
   if (checkDevMode()) return;
  
   // 1. 防重複填答：Cookie 與 LocalStorage 雙重檢查
