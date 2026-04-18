@@ -60,8 +60,7 @@ function showResumeUI(survey) {
         從頭重填
       </button>
     </div>
-    <p class="note" style="margin-top:0.75rem;">兩個按鈕都會開啟同一份問卷，組別不會改變。</p>
-  `;
+  ;
 }
  
 function showLoadingUI(message) {
