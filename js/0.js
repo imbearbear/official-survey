@@ -28,7 +28,8 @@ function getSurveyById(id) {
 // 統一跳轉邏輯，確保帶上 condition 參數
 function redirect(survey) {
   setTimeout(() => {
-    window.location.href = survey.url + "?condition=" + survey.id;
+    // 直接使用陣列中定義好的完整網址，不再額外拼接參數
+    window.location.href = survey.url;
   }, 800);
 }
  
