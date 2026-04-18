@@ -37,13 +37,10 @@ function showResumeUI(survey) {
   document.querySelector(".card").innerHTML = `
     <h1>繼續填答問卷</h1>
     <p>偵測到您之前已開始填答，尚未完成。</p>
-    <p class="note">點擊下方按鈕可以繼續填答，或選擇重新開始新的問卷。</p>
+    <p class="note">請點擊下方按鈕以回到您剛才的進度。</p>
     <div class="btn-group">
       <button class="btn-primary" onclick="continueResume('${survey.id}', '${survey.url}')">
         繼續填答
-      </button>
-      <button class="btn-secondary" onclick="resetAndNew()">
-        重新開始
       </button>
     </div>
   `;
