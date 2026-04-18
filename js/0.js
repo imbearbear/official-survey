@@ -49,8 +49,9 @@ function showResumeUI(survey) {
   `;
 }
  
+// 2. 修正繼續填答：同樣直接使用 url，不要再加參數
 function continueResume(id, url) {
-  window.location.href = url + "?condition=" + id;
+  window.location.href = url;
 }
  
 function resetAndNew() {
