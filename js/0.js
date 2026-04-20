@@ -1,9 +1,13 @@
+//github正式版本
 const surveys = [
   { id: "E1_A1B1C1", url: "https://forms.fillout.com/t/d9vkYZ4H94us?condition=E1_A1B1C1" },
   { id: "E1_A1B1C2", url: "https://forms.fillout.com/t/rkQVgYQcCRus?condition=E1_A1B1C2" },
   { id: "E1_A1B2C1", url: "https://forms.fillout.com/t/8V2GYVa5VYus?condition=E1_A1B2C1" },
   { id: "E1_A1B2C2", url: "https://forms.fillout.com/t/122N7tnu1vus?condition=E1_A1B2C2" },
   { id: "E1_A2B1C1", url: "https://forms.fillout.com/t/bQXGdzHAWZus?condition=E1_A2B1C1" },
+  { id: "E1_A2B1C2", url: "https://forms.fillout.com/t/gbnJAFmcE5us?condition=E1_A2B1C2" },
+  { id: "E1_A2B2C1", url: "https://forms.fillout.com/t/qYNv47YD33us?condition=E1_A2B2C1" },
+  { id: "E1_A2B2C2", url: "https://forms.fillout.com/t/hSXYFvrVPbus?condition=E1_A2B2C2" },
   { id: "E2_A1B1",   url: "https://forms.fillout.com/t/ouu5wcr9hDus?condition=E2_A1B1" },
   { id: "E2_A1B2",   url: "https://forms.fillout.com/t/4URLVZnyi4us?condition=E2_A1B2" },
   { id: "E2_A2B1",   url: "https://forms.fillout.com/t/ak6R3cP4XYus?condition=E2_A2B1" },
@@ -56,7 +60,7 @@ function resetAndNew() {
  
 // 改為純隨機抽籤邏輯
 function assignNew() {
-  // 從9組中隨機挑選一組
+  // 從 12 組中隨機挑選一組
   const picked = surveys[Math.floor(Math.random() * surveys.length)];
  
   // 記錄本次分配，供中途退出恢復使用
