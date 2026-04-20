@@ -5,7 +5,6 @@ const surveys = [
   { id: "E1_A1B2C1", url: "https://forms.fillout.com/t/8V2GYVa5VYus?condition=E1_A1B2C1" },
   { id: "E1_A1B2C2", url: "https://forms.fillout.com/t/122N7tnu1vus?condition=E1_A1B2C2" },
   { id: "E1_A2B1C1", url: "https://forms.fillout.com/t/bQXGdzHAWZus?condition=E1_A2B1C1" },
-  { id: "E1_A2B1C2", url: "https://forms.fillout.com/t/gbnJAFmcE5us?condition=E1_A2B1C2" },
   { id: "E1_A2B2C1", url: "https://forms.fillout.com/t/qYNv47YD33us?condition=E1_A2B2C1" },
   { id: "E1_A2B2C2", url: "https://forms.fillout.com/t/hSXYFvrVPbus?condition=E1_A2B2C2" },
   { id: "E2_A1B1",   url: "https://forms.fillout.com/t/ouu5wcr9hDus?condition=E2_A1B1" },
